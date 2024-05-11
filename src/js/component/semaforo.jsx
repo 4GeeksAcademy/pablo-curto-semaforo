@@ -1,57 +1,64 @@
 import React, { useEffect, useState } from "react";
 
 function Semaforo (){
-    const [contador,setContador] = useState(0);
-    const [colorSem, setColorSem] = useState('yellow');
-    const colores = ['red', 'yellow', 'green']
+    const [Color, setColor] = useState("red");
+    const [ActivePurple, setActivePurple] = useState(false);
 
-    useEffect(()=>{
-        const nuevoColor = colores[contador%colores.length]
-        setColorSem(nuevoColor);
-    },[contador]);
-    
-    let clic =1;
-    
-    function añadirMorado(){
-        
 
-        if(clic==1){
-            document.querySelector("#luzMorada").style.height = "100px";
-            document.querySelector("#contenedor").style.height = "500px";
-            colores.push("purple")
-            
-            clic = clic + 1;
+    const botonPurple = () => {
+        setActivePurple(!ActivePurple);
+    };
+
+    const ManualColor = () => {
+        if (!ActivePurple) {
+            if (Color === "red") {
+                setColor("yellow");
+            } else if (Color === "yellow") {
+                setColor("green");
+            } else if (Color === "green") {
+                setColor("red");
+            }
+        } else {
+            if (Color === "red") {
+                setColor("yellow");
+            } else if (Color === "yellow") {
+                setColor("green");
+            } else if (Color === "green") {
+                setColor("purple");
+            } else if (Color === "purple") {
+                setColor("red");
+            }
         }
-        else{
-            document.querySelector("#luzMorada").style.height = "0px";
-            document.querySelector("#contenedor").style.height = "400px";
-            clic = 1;
-        }
-        
-    }
+    };
 
-    return(
-        <><div className="container" id="contenedor">
-            <div
-                onClick={()=>setColorSem("red")}
-                className={"light red"+((colorSem === "red") ? " glowRed" : "")}>
-            </div>
-            <div 
-                onClick={()=>setColorSem("yellow")}
-                className={"light yellow"+((colorSem === "yellow") ? " glowYellow" : "")}>
-            </div>
-            <div 
-                onClick={()=>setColorSem("green")}
-                className={"light green"+((colorSem === "green") ? " glowGreen" : "")}>
-            </div>
-            <div id="luzMorada" onClick={()=>setColorSem("purple")}
-                className={"light purple"+((colorSem === "purple") ? " glowPurple" : "")}>
+    return (
+        <div>
+            <div className="container contenedorBarra"></div>
+            <div className="container text-center">
+                <div className="traffic-light">
+                    <div onClick={() => 
+						setColor("red")} 
+						className={"light red" + ((Color === "red") ? " glow" : "")}>
+					</div>
+                    <div onClick={() =>
+						setColor("yellow")} 
+						className={"light yellow mt-3" + ((Color === "yellow") ? " glow" : "")}>
+					</div>
+                    <div onClick={() => 
+						setColor("green")} 
+						className={"light green mt-3" + ((Color === "green") ? " glow" : "")}>
+					</div>
+                    	{ActivePurple && <div 
+						className={"light purple mt-3" + ((Color === "purple") ? " glow" : "")}>
+					</div>}
+                </div>
+                <div className="container mt-4">
+                    <button onClick={ManualColor} className="btn btn-warning mx-2">Cambiar de color</button>
+                    <button onClick={botonPurple} className="btn btn-warning mx-2">{ActivePurple ? "Quitar Color Purpura" : "Añadir Color Purpura"}</button>
+                </div>
             </div>
         </div>
-        <button className="cambio" onClick={()=>setContador(contador+1)}>Cambiar color</button>
-        <button className="morado" onClick={()=>añadirMorado()}>Añadir div morado</button>
-        </>
-    )
+    );
 }
 
 export default Semaforo
