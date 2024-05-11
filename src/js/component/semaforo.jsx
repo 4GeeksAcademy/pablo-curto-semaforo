@@ -4,6 +4,32 @@ function Semaforo (){
     const [Color, setColor] = useState("red");
     const [ActivePurple, setActivePurple] = useState(false);
 
+    const AutomaticColor = () => {
+        if (!ActivePurple) {
+            if (Color === "red") {
+                setColor("yellow");
+            } else if (Color === "yellow") {
+                setColor("green");
+            } else if (Color === "green") {
+                setColor("red");
+            }
+        } else {
+            if (Color === "red") {
+                setColor("yellow");
+            } else if (Color === "yellow") {
+                setColor("green");
+            } else if (Color === "green") {
+                setColor("purple");
+            } else if (Color === "purple") {
+                setColor("red");
+            }
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(AutomaticColor, 2000);
+        return () => clearInterval(interval);
+    }, [Color, ActivePurple]);
 
     const botonPurple = () => {
         setActivePurple(!ActivePurple);
